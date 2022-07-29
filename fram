@@ -187,23 +187,25 @@ if [ "$ADMIN" == "true" ]; then
 fi
 
 # User commands
-case "$SSH_ORIGINAL_COMMAND" in
-	acc*)
+function parseCommand() {
+
+case "$1" in
+	acc)
 		check_lock
 		# Optional
 		if type "acc-$BOARD-on" >& /dev/null; then
-			case "$SSH_ORIGINAL_COMMAND" in
-			acc\ on|acc\ 1)
+			case "$2" in
+			on|1)
 				"acc-$BOARD-on"
 				exit 0
 				;;
 
-			acc\ off|acc\ 0)
+			off|0)
 				"acc-$BOARD-off"
 				exit 0
 				;;
 
-			acc\ status|acc)
+			status|*)
 				"acc-$BOARD-status"
 				exit 0
 				;;
@@ -228,25 +230,25 @@ case "$SSH_ORIGINAL_COMMAND" in
 		exec ls -lAh "$TFTP_ROOT/$BOARD"
 		;;
 
-	power*)
+	power)
 		check_lock
-		case "$SSH_ORIGINAL_COMMAND" in
-		power\ on|power\ 1)
+		case "$2" in
+		on|1)
 			"power-$BOARD-on"
 			exit 0
 			;;
 
-		power\ off|power\ 0)
+		off|0)
 			"power-$BOARD-off"
 			exit 0
 			;;
 
-		power\ sample)
+		sample)
 			# Optional
 			type "power-$BOARD-sample" >& /dev/null && { "power-$BOARD-sample"; exit 0; }
 			;;
 
-		power\ status|power)
+		status|*)
 			"power-$BOARD-status"
 			exit 0
 			;;
@@ -265,7 +267,7 @@ case "$SSH_ORIGINAL_COMMAND" in
 		exit 0
 		;;
 
-	rsync\ *)
+	rsync)
 		# Silence check_lock output to prevent breaking rsync. Ideally
 		# we should report back failures through the RSync MOTD.
 		check_lock >> /dev/null ## Silent operation
@@ -317,3 +319,6 @@ case "$SSH_ORIGINAL_COMMAND" in
 		usage
 		;;
 esac
+}
+
+parseCommand $SSH_ORIGINAL_COMMAND
