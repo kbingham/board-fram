@@ -276,7 +276,7 @@ case "$1" in
 		# we should report back failures through the RSync MOTD.
 		check_lock >> /dev/null ## Silent operation
 		export SSH_ORIGINAL_COMMAND
-		exec /usr/bin/rrsync -wo "$TFTP_ROOT/$BOARD"
+		exec /usr/bin/rrsync "$TFTP_ROOT/$BOARD"
 		;;
 
 	status)
