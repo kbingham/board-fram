@@ -5,7 +5,7 @@ mkdir -p $HOME/.ssh
 for f in authorized_keys.d/*; do
 	user=$(basename $f .pub);
 	user=${user%@*}
-	echo -n "restrict,pty,command=\"$PWD/bin/fram $user\" "
+	echo -n "command=\"$PWD/fram $user\" "
 	head -n 1 $f
 done > $HOME/.ssh/authorized_keys
 
