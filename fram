@@ -40,6 +40,10 @@ END
     rsync                          Upload files to TFTP directory (use rsync)
     status                         Show board status
 END
+	type "ssh-$BOARD" >& /dev/null && cat <<END
+    ssh                            SSH directly to the target
+END
+
 	type "wake-$BOARD" >& /dev/null && cat <<END
     wake                           Wake board by key
 END
@@ -310,6 +314,12 @@ case "$1" in
 		fi
 		echo "$status"
 		exit 0
+		;;
+
+	ssh)
+		if type "ssh-$BOARD" >& /dev/null; then
+			ssh-$BOARD
+		fi
 		;;
 
 	wake)
