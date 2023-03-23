@@ -58,6 +58,7 @@ END
 
 Valid admin commands are:
 
+    logs                    View and monitor the logs
     shell                   Launch a shell (use "ssh -t")
     release                 Release a board from any lock
     steal                   Release then immediately lock
@@ -168,6 +169,10 @@ esac
 # Admin commands
 if [ "$ADMIN" == "true" ]; then
 	case "$SSH_ORIGINAL_COMMAND" in
+	logs)
+		tail -f fram.log
+		exit;
+		;;
 	shell)
 		exec /bin/bash -l
 		;;
