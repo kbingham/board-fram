@@ -11,12 +11,20 @@ USER=$1
 # Log access early
 echo "$(date +'%F %T') $BOARD $USER $SSH_ORIGINAL_COMMAND" >> fram.log
 
+FRAM=$0
+FRAMDIR=$(dirname $0)
+
+if [ -d $FRAMDIR/.git ]; then
+  FRAMVER="version:$(git -C $FRAMDIR describe --always)"
+  FRAMVER=$FRAMVER-$(git -C $FRAMDIR log --oneline | wc -l)
+fi
+
 function usage()
 {
 	# User commands help
 	cat <<END
 
-Board FRAM - The Board Farm Remote Access Manager
+Board FRAM - The Board Farm Remote Access Manager $FRAMVER
 
 Valid commands are:
 
