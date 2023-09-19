@@ -1,0 +1,8 @@
+#!/bin/sh
+
+for d in targets/*; do
+  dd=$(basename $d);
+  echo $dd
+  su $dd ./update-ssh-keys
+  echo
+done;
