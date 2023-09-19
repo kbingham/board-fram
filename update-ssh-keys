@@ -2,10 +2,13 @@
 
 mkdir -p $HOME/.ssh
 
-for f in authorized_keys.d/*; do
+echo $HOME:
+ls $HOME/authorized_keys.d
+
+for f in $HOME/authorized_keys.d/*; do
 	user=$(basename $f .pub);
 	user=${user%@*}
-	echo -n "command=\"$PWD/fram $user\" "
+	echo -n "command=\"~fram/fram $user\" "
 	head -n 1 $f
 done > $HOME/.ssh/authorized_keys
 
