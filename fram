@@ -8,8 +8,14 @@ PATH="$HOME/bin:/usr/bin:/bin"
 BOARD=$USER
 USER=$1
 
+function log()
+{
+	echo "$(date +'%F %T') $BOARD $USER $*" >> fram.log
+	echo "$(date +'%F %T') $BOARD $USER $*" >> /tmp/fram.log
+}
+
 # Log access early
-echo "$(date +'%F %T') $BOARD $USER $SSH_ORIGINAL_COMMAND" >> fram.log
+log "$SSH_ORIGINAL_COMMAND"
 
 FRAM=$0
 FRAMDIR=$(dirname $0)
@@ -71,6 +77,7 @@ END
 Valid admin commands are:
 
     logs                    View and monitor the logs
+    all-logs                View and monitor the logs of all boards
     shell                   Launch a shell (use "ssh -t")
     release                 Release a board from any lock
     steal                   Release then immediately lock
@@ -183,6 +190,10 @@ if [ "$ADMIN" == "true" ]; then
 	case "$SSH_ORIGINAL_COMMAND" in
 	logs)
 		tail -f fram.log
+		exit;
+		;;
+	all-logs)
+		tail -f /tmp/fram.log
 		exit;
 		;;
 	shell)
