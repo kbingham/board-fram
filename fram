@@ -300,12 +300,18 @@ case "$1" in
 		echo "/"
 		;;
 
-	rsync)
+	rsync*)
 		# Silence check_lock output to prevent breaking rsync. Ideally
 		# we should report back failures through the RSync MOTD.
 		check_lock >> /dev/null ## Silent operation
 		export SSH_ORIGINAL_COMMAND
-		exec /usr/bin/rrsync "$TFTP_ROOT/$BOARD"
+
+		if [[ $SSH_ORIGINAL_COMMAND =~ .*nfs ]] ; then
+			mkdir -p /opt/root/$BOARD
+			exec /usr/bin/rrsync "/opt/root/$BOARD"
+		else
+			exec /usr/bin/rrsync "$TFTP_ROOT/$BOARD"
+		fi
 		;;
 
 	status)
