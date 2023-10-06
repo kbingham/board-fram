@@ -211,6 +211,10 @@ if [ "$ADMIN" == "true" ]; then
 		echo -n "Board lock stolen: "; report_lock
 		exit 0
 		;;
+	scp*)
+		$SSH_ORIGINAL_COMMAND
+		exit 0
+		;;
 	esac
 fi
 
@@ -312,6 +316,14 @@ case "$1" in
 		else
 			exec /usr/bin/rrsync "$TFTP_ROOT/$BOARD"
 		fi
+		;;
+
+	scp)
+		shift;
+		case "$1" in
+			-t) shift; scp -t "$TFTP_ROOT/$BOARD"/"$*"; ;;
+			*) echo "Not supported?" ;;
+		esac
 		;;
 
 	status)
