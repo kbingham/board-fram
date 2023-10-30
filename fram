@@ -355,8 +355,9 @@ case "$1" in
 		;;
 
 	ssh)
+		shift;
 		if type "ssh-$BOARD" >& /dev/null; then
-			ssh-$BOARD
+			ssh-$BOARD "$@"
 		fi
 		;;
 
