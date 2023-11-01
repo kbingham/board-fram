@@ -54,6 +54,7 @@ END
     reset                          Reset board
     rsync                          Upload files to TFTP directory (use rsync)
     status                         Show board status
+    ssh-proxy                      Open a netcat proxy path to the target
 END
 	type "ssh-$BOARD" >& /dev/null && cat <<END
     ssh                            SSH directly to the target
@@ -352,6 +353,10 @@ case "$1" in
 		fi
 		echo "$status"
 		exit 0
+		;;
+
+	ssh-proxy)
+		nc $BOARD_IP 22
 		;;
 
 	ssh)
