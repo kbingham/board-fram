@@ -3,6 +3,9 @@
 
 set -e
 
+# Prevent local file globbing expansion
+set -f
+
 PATH="$HOME/bin:/usr/bin:/bin"
 
 BOARD=$USER
