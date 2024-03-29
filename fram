@@ -385,6 +385,8 @@ case "$1" in
 		shift;
 		if type "ssh-$BOARD" >& /dev/null; then
 			ssh-$BOARD "$@"
+		else
+			echo "SSH is not supported on this board currently"
 		fi
 		;;
 
