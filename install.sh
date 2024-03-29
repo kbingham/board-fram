@@ -20,7 +20,7 @@ install -m 644 -g fram -o $BOARD_USER \
 	$TARGET/authorized_keys.d
 
 # Prepare a board specific key
-su $BOARD_USER -c /usr/bin/ssh-keygen
+su $BOARD_USER -c "yes '' | /usr/bin/ssh-keygen -t ed25519"
 
 # And configure users to access through fram
 su $BOARD_USER -c ./update-ssh-keys
