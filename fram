@@ -362,6 +362,25 @@ case "$1" in
 		nc $BOARD_IP 22
 		;;
 
+
+	wait-for-ssh)
+		# Allow the visual spinner updates to be disabled
+		if [ "$1" = "-s" ]; then
+			silent=true
+			shift
+		fi
+
+		i=0
+		spin='-\|/'
+		$silent echo -n "Waiting for $BOARD:  "
+		until nc -zq 1 $BOARD_IP 22 2>/dev/null; do
+			i=$(( (i+1) % 4 ))
+			$slient printf "\b${spin:$i:1}"
+			sleep 1
+		done
+		$silent echo ""
+		;;
+
 	ssh)
 		shift;
 		if type "ssh-$BOARD" >& /dev/null; then
