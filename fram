@@ -169,9 +169,13 @@ function check_lock()
 }
 
 # Admin commands must be enabled explicitly by setting ADMIN_USERS
-if [ "$ADMIN_USERS" != "" ]; then
-	ADMIN=$(eval "case $USER in $ADMIN_USERS) echo true ;; esac")
-fi
+ADMIN=false
+for admin in "${ADMIN_USERS[@]}"; do
+    if [ "$USER" == "$admin" ]; then
+        ADMIN=true
+        break
+    fi
+done
 
 # Handle help and welcome early, as they do not need locking
 case "$SSH_ORIGINAL_COMMAND" in
